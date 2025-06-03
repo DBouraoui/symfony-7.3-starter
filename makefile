@@ -12,3 +12,6 @@ build:
 prod:
 	docker compose -f compose.prod.yaml build
 	docker compose -f compose.prod.yaml up -d --wait
+
+deploy:
+	ansible-playbook -i ansible/inventory.yaml ansible/deploy.yaml
