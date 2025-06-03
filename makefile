@@ -1,4 +1,4 @@
-.PHONY: down up build prod
+.PHONY: down up build prod deploy-ansible
 
 up:
 	docker compose up -d --wait
@@ -17,5 +17,5 @@ prod:
 	docker compose -f compose.prod.yaml up -d --wait
 	docker compose -f compose.prod.yaml exec app composer install
 
-deploy:
+deploy-ansible:
 	ansible-playbook -i ansible/inventory.yaml ansible/deploy.yaml
