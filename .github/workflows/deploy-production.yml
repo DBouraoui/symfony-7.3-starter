@@ -21,30 +21,35 @@ jobs:
                   password: ${{ secrets.VPS_PASSWORD }}
                   port: 22
                   script: |
-                      echo "🚀 Début du déploiement..."
+                      echo "🚀 Début du déploiement en production..."
 
                       # Vérifier si le dossier symfony existe
-                      if [ ! -d "/var/www/symfony" ]; then
+                      if [ ! -d "/var/www/production" ]; then
                         echo "📁 Premier déploiement - Création du dossier symfony"
-                        sudo chown $USER:$USER /var/www/symfony
+                        sudo chown $USER:$USER /var/www/production
                         cd /var/www/
 
                         # Clone du repository
                         echo "📥 Clonage du repository..."
-                        git clone git@github.com:DBouraoui/symfony-7.3-starter.git symfony
+                        git clone git@github.com:DBouraoui/symfony-7.3-starter.git production
+
+                        #Déploiement première fois
+                        cd /var/www/production
+
+                        make prod-first-time
                       else
                         echo "🔄 Mise à jour du projet existant"
-                        cd /var/www/symfony
+                        cd /var/www/production
 
                         # Sauvegarder les changements locaux si nécessaire
                         git stash
 
                         # Pull des dernières modifications
                         echo "📥 Récupération des dernières modifications..."
-                        git pull origin ${{ github.ref_name }}
+                        git pull origin prod
                       fi
 
-                      cd /var/www/symfony
+                      cd /var/www/production
 
                       # Vérifier si le Makefile existe
                       if [ ! -f "makefile" ]; then
